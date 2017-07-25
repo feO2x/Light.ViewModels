@@ -1,12 +1,11 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Light.ViewModels
 {
     /// <summary>
-    ///     Represents a base class that implements <see cref="INotifyPropertyChanged" /> and <see cref="IRaiseChangeNotification" />.
-    ///     Use the extension methods of <see cref="ChangeNotificationExtensions" /> or the protected method <see cref="OnPropertyChanged" />
+    ///     Represents a base class that implements <see cref="INotifyPropertyChanged" /> and <see cref="IRaisePropertyChanged" />.
+    ///     Use the extension methods of <see cref="IRaisePropertyChanged" /> or the protected method <see cref="OnPropertyChanged" />
     ///     to easily raise property change notifications.
     /// </summary>
     public abstract class BaseNotifyPropertyChanged : INotifyPropertyChanged, IRaisePropertyChanged

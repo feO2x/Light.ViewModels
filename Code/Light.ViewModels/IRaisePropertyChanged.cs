@@ -7,7 +7,7 @@ namespace Light.ViewModels
     /// </summary>
     /// <remarks>
     ///     Note to implementers: by default, we suggest that you implement this interface explicitly so that
-    ///     the public API of the target class is not poluted unnecessarily. The extension methods of <see cref="ChangeNotificationExtensions" />
+    ///     the public API of the target class is not poluted unnecessarily. The extension methods of <see cref="RaisePropertyChangedExtensions" />
     ///     use the <see cref="OnPropertyChanged" /> method to callback into your object to raise the change notification mechanism
     ///     (e.g. <see cref="INotifyPropertyChanged.PropertyChanged" />), but <see cref="OnPropertyChanged" /> should not be visible to your primary
     ///     clients (e.g. views of your view models).
