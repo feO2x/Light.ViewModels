@@ -1,7 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <Description>Simplify your XAML applications with Light.ViewModels!</Description>
+    <Version>0.1.0</Version>
+    <Authors>Kenny Pflug</Authors>
+    <Company>Kenny Pflug</Company>
+    <Copyright>Copyright © Kenny Pflug</Copyright>
+    <PackageIconUrl>https://raw.githubusercontent.com/feO2x/Light.GuardClauses/master/Images/light_logo.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/feO2x/Light.ViewModels</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/feO2x/Light.ViewModels/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>XAML WPF WindowsStore UWP ViewModels MVVM INotifyPropertyChanged ICommand</PackageTags>
+    <PackageReleaseNotes>Initial Release v0.1
+--------------------------------------
+
+- Use the IRaisePropertyChanged interface and its extension methods to simplifiy the code in your view model property setters.
+- BaseNotifyPropertyChanged is the base class that automatically implements INotifyPropertyChanged and IRaisePropertyChanged for you.
+- Use the DelegateCommand in your ViewModels to easily create ICommand instances that use the methods of your view model.
+    </PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.0\Light.ViewModels.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
