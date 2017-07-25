@@ -75,5 +75,16 @@ namespace Light.ViewModels.Tests
 
             callCount.Should().Be(1);
         }
+
+        [Fact]
+        public void ExecuteMustThrowIfCanExecuteReturnsFalse()
+        {
+            var testTarget = new DelegateCommand(DoNothing, () => false);
+
+            Action act = () => testTarget.Execute();
+
+            act.ShouldThrow<InvalidOperationException>()
+               .And.Message.Should().Be("Execute must not be called when CanExecute returns false.");
+        }
     }
 }
