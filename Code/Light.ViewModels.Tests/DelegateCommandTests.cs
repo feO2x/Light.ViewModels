@@ -44,20 +44,22 @@ namespace Light.ViewModels.Tests
             callCount.Should().Be(1);
         }
 
-        [Fact]
-        public void CanExecuteMustCallTheFunc()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void CanExecuteMustCallTheFunc(bool canExecuteOutcome)
         {
             var callCount = 0;
             var testTarget = new DelegateCommand(DoNothing,
                                                  () =>
                                                  {
                                                      callCount++;
-                                                     return false;
+                                                     return canExecuteOutcome;
                                                  });
 
             var result = testTarget.CanExecute();
 
-            result.Should().BeFalse();
+            result.Should().Be(canExecuteOutcome);
             callCount.Should().Be(1);
         }
 
