@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows.Input;
 using FluentAssertions;
 using Xunit;
@@ -13,6 +14,12 @@ namespace Light.ViewModels.Tests
         public void DelegateCommandImplementsICommand()
         {
             typeof(DelegateCommand).Should().Implement<ICommand>();
+        }
+
+        [Fact]
+        public void NotSealed()
+        {
+            typeof(DelegateCommand).GetTypeInfo().IsSealed.Should().BeFalse();
         }
 
         [Fact]
@@ -85,6 +92,52 @@ namespace Light.ViewModels.Tests
 
             act.ShouldThrow<InvalidOperationException>()
                .And.Message.Should().Be("Execute must not be called when CanExecute returns false.");
+        }
+
+        [Fact]
+        public void Inheritance()
+        {
+            var testTarget = new InheritanceMock(DoNothing);
+
+            testTarget.Execute();
+            testTarget.CanExecute();
+            testTarget.RaiseCanExecuteChanged();
+
+            testTarget.AllOverriddenMethodsShouldHaveBeenCalled();
+        }
+
+        public sealed class InheritanceMock : DelegateCommand
+        {
+            private int _executeCallCount;
+            private int _canExecuteCallCount;
+            private int _raiseCanExecuteChangedCallCount;
+
+            public InheritanceMock(Action execute, Func<bool> canExecute = null) : base(execute, canExecute) { }
+
+            public override void Execute()
+            {
+                base.Execute();
+                _executeCallCount++;
+            }
+
+            public override bool CanExecute()
+            {
+                _canExecuteCallCount++;
+                return base.CanExecute();
+            }
+
+            public override void RaiseCanExecuteChanged()
+            {
+                base.RaiseCanExecuteChanged();
+                _raiseCanExecuteChangedCallCount++;
+            }
+
+            public void AllOverriddenMethodsShouldHaveBeenCalled()
+            {
+                _executeCallCount.Should().Be(1);
+                _canExecuteCallCount.Should().Be(2, "because Execute calls CanExecute, too, before invoking the delegate");
+                _raiseCanExecuteChangedCallCount.Should().Be(1);
+            }
         }
     }
 }

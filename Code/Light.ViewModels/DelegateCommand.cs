@@ -5,9 +5,9 @@ using Light.GuardClauses;
 namespace Light.ViewModels
 {
     /// <summary>
-    ///     Represents an <see cref="ICommand" /> that executed paramterless delegates.
+    ///     Represents an <see cref="ICommand" /> that executes parameterless delegates.
     /// </summary>
-    public sealed class DelegateCommand : ICommand
+    public class DelegateCommand : ICommand
     {
         /// <summary>
         ///     Gets the delegate that is executed when <see cref="CanExecute" /> is called.
@@ -48,7 +48,7 @@ namespace Light.ViewModels
         ///     Executes the command.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when this method is called, but <see cref="CanExecute" /> returns false.</exception>
-        public void Execute()
+        public virtual void Execute()
         {
             if (CanExecute() == false)
                 throw new InvalidOperationException("Execute must not be called when CanExecute returns false.");
@@ -58,7 +58,7 @@ namespace Light.ViewModels
         /// <summary>
         ///     Checks if the command can be executed now.
         /// </summary>
-        public bool CanExecute()
+        public virtual bool CanExecute()
         {
             return CanExecuteFunc?.Invoke() ?? true;
         }
@@ -66,7 +66,7 @@ namespace Light.ViewModels
         /// <summary>
         ///     Raises the <see cref="CanExecuteChanged" /> event.
         /// </summary>
-        public void RaiseCanExecuteChanged()
+        public virtual void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
