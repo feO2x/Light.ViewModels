@@ -1,5 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using Light.GuardClauses;
 
 namespace Light.ViewModels
 {
@@ -32,6 +36,21 @@ namespace Light.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string memberName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(memberName));
+        }
+
+        /// <summary>
+        ///     Raises the <see cref="PropertyChanged" /> event when handlers are attached.
+        /// </summary>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="propertyExpression">The expression of the shape "() => Property" where the property name is extracted from.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="propertyExpression" /> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="propertyExpression"/> is not of the shape "() => Property".</exception>
+        protected void OnPropertyChanged<TProperty>(Expression<Func<TProperty>> propertyExpression)
+        {
+            var memberExpression = propertyExpression.MustNotBeNull(nameof(propertyExpression)).Body as MemberExpression;
+            if (!(memberExpression?.Member is PropertyInfo propertyInfo))
+                throw new ArgumentException("The specified expression is not of the shape \"() => Property\".", nameof(propertyExpression));
+            OnPropertyChanged(propertyInfo.Name);
         }
     }
 }

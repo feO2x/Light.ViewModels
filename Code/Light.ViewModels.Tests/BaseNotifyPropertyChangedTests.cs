@@ -39,6 +39,17 @@ namespace Light.ViewModels.Tests
             typeof(BaseNotifyPropertyChanged).Should().Implement<INotifyPropertyChanged>();
         }
 
+        [Fact]
+        public void PropertyChangedViaExpression()
+        {
+            var propertyChangedStub = new PropertyChangedStub();
+            propertyChangedStub.MonitorEvents();
+
+            propertyChangedStub.Increment();
+
+            propertyChangedStub.ShouldRaisePropertyChangeFor(s => s.IntegerValue);
+        }
+
         public class PropertyChangedStub : BaseNotifyPropertyChanged
         {
             private int _integerValue;
@@ -51,6 +62,12 @@ namespace Light.ViewModels.Tests
                     _integerValue = value;
                     OnPropertyChanged();
                 }
+            }
+
+            public void Increment()
+            {
+                _integerValue++;
+                OnPropertyChanged(() => IntegerValue);
             }
         }
     }
