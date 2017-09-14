@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Light.ViewModels
 {
     /// <summary>
-    ///     Represents a base class implementation of <see cref="INotifyDataErrorInfo" />, using a <see cref="ValidationManager" />
+    ///     Represents a base class implementation of <see cref="INotifyDataErrorInfo" />, using a <see cref="ViewModels.ValidationManager" />
     ///     internally. Also provides <see cref="INotifyPropertyChanged" /> functionality via <see cref="BaseNotifyPropertyChanged" />.
     /// </summary>
     public abstract class BaseNotifyDataErrorInfo : BaseNotifyPropertyChanged, INotifyDataErrorInfo, IRaiseErrorsChanged
@@ -24,6 +26,11 @@ namespace Light.ViewModels
             ValidationManager = validationManager ?? new ValidationManager();
         }
 
+        /// <summary>
+        ///     Gets all errors that this entity currently has.
+        /// </summary>
+        public IReadOnlyDictionary<string, ValidationResult<ValidationMessage>> AllErrors => ValidationManager.AllErrors;
+
         /// <inheritdoc />
         public IEnumerable GetErrors(string propertyName) => ValidationManager.GetErrors(propertyName);
 
@@ -38,6 +45,21 @@ namespace Light.ViewModels
         void IRaiseErrorsChanged.OnErrorsChanged(string propertyName)
         {
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        ///     Validates the value using the specified <paramref name="validate" /> delegate and calls <see cref="ErrorsChanged" />
+        ///     when the errors have changed for the given property.
+        /// </summary>
+        /// <typeparam name="T">The type of the value.</typeparam>
+        /// <param name="value">The value to be validated.</param>
+        /// <param name="validate">The method that performs the validation of the given value.</param>
+        /// <param name="propertyName">The name of the property (optional). This value is automatically set using the <see cref="CallerMemberNameAttribute" />.</param>
+        /// <returns>The validation result of the <paramref name="validate" /> delegate.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="validate" /> or <paramref name="propertyName" /> is null.</exception>
+        protected ValidationResult<ValidationMessage> Validate<T>(T value, Func<T, ValidationResult<ValidationMessage>> validate, [CallerMemberName] string propertyName = null)
+        {
+            return ValidationManager.Validate(value, validate, this, propertyName);
         }
     }
 }
