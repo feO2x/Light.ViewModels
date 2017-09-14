@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
     <Description>Simplify your XAML applications with Light.ViewModels!</Description>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Authors>Kenny Pflug</Authors>
     <Company>Kenny Pflug</Company>
     <Copyright>Copyright © Kenny Pflug</Copyright>
@@ -11,10 +11,8 @@
     <PackageProjectUrl>https://github.com/feO2x/Light.ViewModels</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/feO2x/Light.ViewModels/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>XAML WPF WindowsStore UWP ViewModels MVVM INotifyPropertyChanged ICommand</PackageTags>
-    <PackageReleaseNotes>New in v0.2: ParameterizedComamnd is a version of DelegateCommand that takes an object as parameter for Execute and CanExecute.
-Breaking Changes: DelegateCommand is no longer sealed, the Execute, CanExecute and RaiseCanExecuteChanged methods are now virtual
-    </PackageReleaseNotes>
+    <PackageTags>XAML WPF WindowsStore UWP ViewModels MVVM INotifyPropertyChanged ICommand INotifyDataErrorInfo</PackageTags>
+    <PackageReleaseNotes>New in v0.3: added ValidationManager and BaseNotifyDataErrorInfo</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
