@@ -96,16 +96,25 @@ namespace Light.ViewModels
             return _hashCode;
         }
 
+        /// <summary>
+        ///     Checks if the two validation results are equal.
+        /// </summary>
         public static bool operator ==(ValidationResult<TError> x, ValidationResult<TError> y)
         {
             return x._hashCode == y._hashCode && x.Equals(y);
         }
 
+        /// <summary>
+        ///     Checks if the two validation results are not equal.
+        /// </summary>
         public static bool operator !=(ValidationResult<TError> x, ValidationResult<TError> y)
         {
             return !(x._hashCode == y._hashCode && x.Equals(y));
         }
 
+        /// <summary>
+        ///     Implicitely converts the specified error instance to a <see cref="ValidationResult{TError}" /> instance.
+        /// </summary>
         public static implicit operator ValidationResult<TError>(TError error)
         {
             return new ValidationResult<TError>(error);

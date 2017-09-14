@@ -12,6 +12,9 @@ namespace Light.ViewModels
     /// <typeparam name="TError">The type of the error messages.</typeparam>
     public class ValidationManager<TError>
     {
+        /// <summary>
+        ///     Gets the internal dictionary used to store erroneous validation results.
+        /// </summary>
         protected readonly Dictionary<string, ValidationResult<TError>> Errors;
 
         /// <summary>

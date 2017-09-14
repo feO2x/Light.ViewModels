@@ -70,11 +70,17 @@ namespace Light.ViewModels
             return Equality.CreateHashCode(_message, _level);
         }
 
+        /// <summary>
+        ///     Checks if the two validation messages are equal.
+        /// </summary>
         public static bool operator ==(ValidationMessage x, ValidationMessage y)
         {
             return ReferenceEquals(x, null) ? ReferenceEquals(y, null) : x.Equals(y);
         }
 
+        /// <summary>
+        ///     Checks if the two validation message are not equal.
+        /// </summary>
         public static bool operator !=(ValidationMessage x, ValidationMessage y)
         {
             return !(x == y);
