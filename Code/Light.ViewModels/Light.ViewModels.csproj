@@ -22,7 +22,7 @@ Breaking Changes: DelegateCommand is no longer sealed, the Execute, CanExecute a
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Light.GuardClauses" Version="3.4.0" />
+    <PackageReference Include="Light.GuardClauses" Version="3.5.0" />
   </ItemGroup>
 
 </Project>
