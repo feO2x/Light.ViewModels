@@ -64,5 +64,14 @@ namespace Light.ViewModels.Tests
             equalityResult.Should().Be(expected);
             inequalityResult.Should().Be(!expected);
         }
+
+        [Fact]
+        public void ImplicitConversion()
+        {
+            ValidationResult<string> result = "Foo";
+
+            result.Errors.Should().HaveCount(1);
+            result.Errors[0].Should().Be("Foo");
+        }
     }
 }

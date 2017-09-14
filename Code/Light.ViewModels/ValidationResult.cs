@@ -100,5 +100,10 @@ namespace Light.ViewModels
         {
             return !(x._hashCode == y._hashCode && x.Equals(y));
         }
+
+        public static implicit operator ValidationResult<TError>(TError error)
+        {
+            return new ValidationResult<TError>(error);
+        }
     }
 }
