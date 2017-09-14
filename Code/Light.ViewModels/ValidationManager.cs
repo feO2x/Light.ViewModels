@@ -8,21 +8,21 @@ namespace Light.ViewModels
 {
     public class ValidationManager<TError>
     {
-        private readonly Dictionary<string, ValidationResult<TError>> _errors;
+        protected readonly Dictionary<string, ValidationResult<TError>> Errors;
 
         public ValidationManager() : this(new Dictionary<string, ValidationResult<TError>>()) { }
 
         public ValidationManager(Dictionary<string, ValidationResult<TError>> errors)
         {
-            _errors = errors.MustNotBeNull(nameof(errors));
+            Errors = errors.MustNotBeNull(nameof(errors));
         }
 
-        public virtual bool HasErrors => _errors.Count > 0;
+        public virtual bool HasErrors => Errors.Count > 0;
 
 
         public IEnumerable GetErrors(string propertyName)
         {
-            return _errors.TryGetValue(propertyName, out var validationResult) ? validationResult.Errors : null;
+            return Errors.TryGetValue(propertyName, out var validationResult) ? validationResult.Errors : null;
         }
 
         public ValidationResult<TError> Validate<T>(T value, Func<T, ValidationResult<TError>> validate, IRaiseErrorsChanged raiseErrorsChanged, [CallerMemberName] string propertyName = null)
@@ -34,27 +34,54 @@ namespace Light.ViewModels
             var validationResult = validate(value);
             if (validationResult.IsValid)
             {
-                if (_errors.ContainsKey(propertyName) == false)
+                if (Errors.ContainsKey(propertyName) == false)
                     return validationResult;
 
-                _errors.Remove(propertyName);
+                Errors.Remove(propertyName);
                 raiseErrorsChanged.OnErrorsChanged(propertyName);
                 return validationResult;
             }
 
-            if (_errors.TryGetValue(propertyName, out var existingErrors))
+            if (Errors.TryGetValue(propertyName, out var existingErrors))
             {
                 if (existingErrors == validationResult)
                     return validationResult;
 
-                _errors[propertyName] = validationResult;
+                Errors[propertyName] = validationResult;
                 raiseErrorsChanged.OnErrorsChanged(propertyName);
                 return validationResult;
             }
 
-            _errors.Add(propertyName, validationResult);
+            Errors.Add(propertyName, validationResult);
             raiseErrorsChanged.OnErrorsChanged(propertyName);
             return validationResult;
+        }
+    }
+
+    public class ValidationManager : ValidationManager<ValidationMessage>
+    {
+        public ValidationManager() { }
+
+        public ValidationManager(Dictionary<string, ValidationResult<ValidationMessage>> errors) : base(errors) { }
+
+        public override bool HasErrors
+        {
+            get
+            {
+                if (Errors.Count == 0) return false;
+
+                var numberOfErrors = 0;
+                foreach (var keyValuePair in Errors)
+                {
+                    for (var i = 0; i < keyValuePair.Value.Errors.Count; i++)
+                    {
+                        if (keyValuePair.Value.Errors[i].Level == ValidationMessageLevel.Error)
+                            numberOfErrors++;
+                    }
+                }
+
+                return numberOfErrors > 0;
+            }
         }
     }
 }

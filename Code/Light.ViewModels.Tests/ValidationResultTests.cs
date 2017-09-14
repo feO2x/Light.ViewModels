@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluentAssertions;
+using Light.GuardClauses.Exceptions;
 using Xunit;
 
 namespace Light.ViewModels.Tests
@@ -72,6 +74,16 @@ namespace Light.ViewModels.Tests
 
             result.Errors.Should().HaveCount(1);
             result.Errors[0].Should().Be("Foo");
+        }
+
+        [Fact]
+        public void ErrorsMustNotContainNull()
+        {
+            // ReSharper disable once ObjectCreationAsStatement
+            Action act = () => new ValidationResult<string>(new[] { "Foo", null });
+
+            act.ShouldThrow<CollectionException>()
+               .And.Message.Should().Contain("The specified errors collection must not contain null.");
         }
     }
 }

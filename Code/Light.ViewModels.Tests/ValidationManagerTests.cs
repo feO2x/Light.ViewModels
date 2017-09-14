@@ -84,5 +84,21 @@ namespace Light.ViewModels.Tests
                 _capturedPropertyNames.Clear();
             }
         }
+
+        [Fact]
+        public void DerivedValidationManagerOnlyCountsValidationMessagesWithLevelError()
+        {
+            var errors = new Dictionary<string, ValidationResult<ValidationMessage>>
+                         {
+                             ["Foo"] = new ValidationMessage("Bar"),
+                             ["Baz"] = new ValidationMessage("Qux", ValidationMessageLevel.Warning)
+                         };
+            var validationManager = new ValidationManager(errors);
+            validationManager.HasErrors.Should().BeTrue();
+
+            errors.Remove("Foo");
+
+            validationManager.HasErrors.Should().BeFalse();
+        }
     }
 }

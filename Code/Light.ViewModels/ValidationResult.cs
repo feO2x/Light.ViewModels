@@ -36,8 +36,13 @@ namespace Light.ViewModels
         public ValidationResult(IReadOnlyList<TError> errors)
         {
             errors.MustNotBeNullOrEmpty(nameof(errors));
-            _errors = errors;
+            for (var i = 0; i < errors.Count; i++)
+            {
+                if (errors[i] == null)
+                    throw new CollectionException("The specified errors collection must not contain null.", nameof(errors));
+            }
 
+            _errors = errors;
             _hashCode = errors.Count.GetHashCode();
         }
 
