@@ -11,10 +11,10 @@ namespace Light.ViewModels
         /// <summary>
         ///     Initializes a new instance of <see cref="NamedCommand" />.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">The name of the command.</param>
         /// <param name="execute">The delegate that will be executed when <see cref="DelegateCommand.Execute" /> is called.</param>
         /// <param name="canExecute">The delegate that will be executed when <see cref="DelegateCommand.CanExecute" /> is called (optional).</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="execute" /> is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="name" /> or <paramref name="execute" /> is null.</exception>
         public NamedCommand(string name, Action execute, Func<bool> canExecute = null) : base(execute, canExecute)
         {
             Name = name.MustNotBeNull(nameof(name));
