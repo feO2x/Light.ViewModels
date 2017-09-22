@@ -38,5 +38,18 @@ namespace Light.ViewModels.Tests
             if (expected)
                 first.GetHashCode().Should().Be(second.GetHashCode());
         }
+
+        [Theory]
+        [InlineData("Foo")]
+        [InlineData("Bar")]
+        [InlineData("Baz")]
+        public void ToStringReturnsMessage(string message)
+        {
+            var validationMessage = new ValidationMessage(message);
+
+            var result = validationMessage.ToString();
+
+            result.Should().Be(message);
+        }
     }
 }

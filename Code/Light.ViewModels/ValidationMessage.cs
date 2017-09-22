@@ -85,5 +85,13 @@ namespace Light.ViewModels
         {
             return !(x == y);
         }
+
+        /// <summary>
+        ///     Returns the message this instance.
+        /// </summary>
+        public override string ToString()
+        {
+            return Message;
+        }
     }
 }
