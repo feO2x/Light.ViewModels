@@ -4,12 +4,12 @@ using Light.GuardClauses;
 namespace Light.ViewModels
 {
     /// <summary>
-    ///     Represents a <see cref="DelegateCommand" /> that has a name.
+    /// Represents a <see cref="DelegateCommand" /> that has a name.
     /// </summary>
     public class NamedCommand : DelegateCommand
     {
         /// <summary>
-        ///     Initializes a new instance of <see cref="NamedCommand" />.
+        /// Initializes a new instance of <see cref="NamedCommand" />.
         /// </summary>
         /// <param name="name">The name of the command.</param>
         /// <param name="execute">The delegate that will be executed when <see cref="DelegateCommand.Execute" /> is called.</param>
@@ -21,7 +21,7 @@ namespace Light.ViewModels
         }
 
         /// <summary>
-        ///     Gets the name of the command.
+        /// Gets the name of the command.
         /// </summary>
         public string Name { get; }
     }

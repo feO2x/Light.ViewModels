@@ -78,7 +78,7 @@ namespace Light.ViewModels
         /// if you change the value from a different member (we suggest you use the nameof operator in those scenarios).
         /// </param>
         /// <returns>True if <paramref name="value" /> was set on <paramref name="field" /> and the change notification mechanism was raised, else false.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="target" /> or <paramref name="comparer"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="target" /> or <paramref name="comparer" /> is null.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool SetIfDifferent<T>(this IRaisePropertyChanged target, ref T field, T value, IEqualityComparer<T> comparer, [CallerMemberName] string memberName = null)
         {

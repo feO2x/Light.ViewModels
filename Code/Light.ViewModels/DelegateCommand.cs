@@ -5,22 +5,22 @@ using Light.GuardClauses;
 namespace Light.ViewModels
 {
     /// <summary>
-    ///     Represents an <see cref="ICommand" /> that calls parameterless delegates.
+    /// Represents an <see cref="ICommand" /> that calls parameterless delegates.
     /// </summary>
     public class DelegateCommand : ICommand
     {
         /// <summary>
-        ///     Gets the delegate that is executed when <see cref="CanExecute" /> is called. This value might be null.
+        /// Gets the delegate that is executed when <see cref="CanExecute" /> is called. This value might be null.
         /// </summary>
         public readonly Func<bool> CanExecuteFunc;
 
         /// <summary>
-        ///     Gets the delegate that is executed when <see cref="Execute" /> is called.
+        /// Gets the delegate that is executed when <see cref="Execute" /> is called.
         /// </summary>
         public readonly Action ExecuteAction;
 
         /// <summary>
-        ///     Initializes a new instance of <see cref="DelegateCommand" />.
+        /// Initializes a new instance of <see cref="DelegateCommand" />.
         /// </summary>
         /// <param name="execute">The delegate that will be executed when <see cref="Execute" /> is called.</param>
         /// <param name="canExecute">The delegate that will be executed when <see cref="CanExecute" /> is called (optional).</param>
@@ -31,21 +31,15 @@ namespace Light.ViewModels
             CanExecuteFunc = canExecute;
         }
 
-        bool ICommand.CanExecute(object parameter)
-        {
-            return CanExecute();
-        }
+        bool ICommand.CanExecute(object parameter) => CanExecute();
 
-        void ICommand.Execute(object parameter)
-        {
-            Execute();
-        }
+        void ICommand.Execute(object parameter) => Execute();
 
         /// <inheritdoc />
         public event EventHandler CanExecuteChanged;
 
         /// <summary>
-        ///     Executes the command.
+        /// Executes the command.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when this method is called, but <see cref="CanExecute" /> returns false.</exception>
         public virtual void Execute()
@@ -56,19 +50,13 @@ namespace Light.ViewModels
         }
 
         /// <summary>
-        ///     Checks if the command can be executed.
+        /// Checks if the command can be executed.
         /// </summary>
-        public virtual bool CanExecute()
-        {
-            return CanExecuteFunc?.Invoke() ?? true;
-        }
+        public virtual bool CanExecute() => CanExecuteFunc?.Invoke() ?? true;
 
         /// <summary>
-        ///     Raises the <see cref="CanExecuteChanged" /> event.
+        /// Raises the <see cref="CanExecuteChanged" /> event.
         /// </summary>
-        public virtual void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-        }
+        public virtual void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
 }

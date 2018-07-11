@@ -7,18 +7,18 @@ using Light.GuardClauses;
 namespace Light.ViewModels
 {
     /// <summary>
-    ///     Represents an object that handles the current errors of an entity.
+    /// Represents an object that handles the current errors of an entity.
     /// </summary>
     /// <typeparam name="TError">The type of the error messages.</typeparam>
     public class ValidationManager<TError>
     {
         /// <summary>
-        ///     Gets the internal dictionary used to store erroneous validation results.
+        /// Gets the internal dictionary used to store erroneous validation results.
         /// </summary>
         protected readonly Dictionary<string, ValidationResult<TError>> Errors;
 
         /// <summary>
-        ///     Initializes a new instance of <see cref="ValidationManager{TError}" /> with an optional errors dictionary.
+        /// Initializes a new instance of <see cref="ValidationManager{TError}" /> with an optional errors dictionary.
         /// </summary>
         /// <param name="errors">The dictionary used to store the validation results of erroneous properties (optional). A new dictionary will be automatically created if null is passed in.</param>
         public ValidationManager(Dictionary<string, ValidationResult<TError>> errors = null)
@@ -27,17 +27,17 @@ namespace Light.ViewModels
         }
 
         /// <summary>
-        ///     Gets the value indicating whether the target entity contains errors.
+        /// Gets the value indicating whether the target entity contains errors.
         /// </summary>
         public virtual bool HasErrors => Errors.Count > 0;
 
         /// <summary>
-        ///     Gets the errors dictionary of the validation manager.
+        /// Gets the errors dictionary of the validation manager.
         /// </summary>
         public IReadOnlyDictionary<string, ValidationResult<TError>> AllErrors => Errors;
 
         /// <summary>
-        ///     Gets all error messages associated with the given property name.
+        /// Gets all error messages associated with the given property name.
         /// </summary>
         /// <param name="propertyName">The name of the property.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="propertyName" /> is null.</exception>
@@ -48,8 +48,8 @@ namespace Light.ViewModels
         }
 
         /// <summary>
-        ///     Validates the <paramref name="value" /> with the specified <paramref name="validate" /> delegate and calls <see cref="IRaiseErrorsChanged.OnErrorsChanged" />
-        ///     when the errors have changed for the given property.
+        /// Validates the <paramref name="value" /> with the specified <paramref name="validate" /> delegate and calls <see cref="IRaiseErrorsChanged.OnErrorsChanged" />
+        /// when the errors have changed for the given property.
         /// </summary>
         /// <typeparam name="T">The type of the value.</typeparam>
         /// <param name="value">The value to be validated.</param>
@@ -92,19 +92,19 @@ namespace Light.ViewModels
     }
 
     /// <summary>
-    ///     Represents a <see cref="ValidationManager{TError}" /> that uses <see cref="ValidationMessage" /> instances as error objects.
+    /// Represents a <see cref="ValidationManager{TError}" /> that uses <see cref="ValidationMessage" /> instances as error objects.
     /// </summary>
     public class ValidationManager : ValidationManager<ValidationMessage>
     {
         /// <summary>
-        ///     Initializes a new instance of <see cref="ValidationManager" /> with an optional errors dictionary.
+        /// Initializes a new instance of <see cref="ValidationManager" /> with an optional errors dictionary.
         /// </summary>
         /// <param name="errors">The dictionary used to store the validation results of erroneous properties (optional). A new dictionary will be automatically created if null is passed in.</param>
         public ValidationManager(Dictionary<string, ValidationResult<ValidationMessage>> errors = null) : base(errors) { }
 
         /// <summary>
-        ///     Gets the value indicating whether the target entity contains errors. Only <see cref="ValidationMessage" /> instances
-        ///     that contain level <see cref="ValidationMessageLevel.Error" /> are considered as actual errors.
+        /// Gets the value indicating whether the target entity contains errors. Only <see cref="ValidationMessage" /> instances
+        /// that contain level <see cref="ValidationMessageLevel.Error" /> are considered as actual errors.
         /// </summary>
         public override bool HasErrors
         {
