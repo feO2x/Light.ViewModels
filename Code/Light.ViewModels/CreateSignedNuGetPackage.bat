@@ -1,1 +1,1 @@
-msbuild Light.ViewModels.csproj /t:rebuild /t:pack /p:Configuration=Release /p:SignAssembly=true /p:AssemblyOriginatorKeyFile=bin\Light.ViewModels.snk
+msbuild Light.ViewModels.csproj /t:clean;build;pack /p:Configuration=Release /p:SignAssembly=true /p:AssemblyOriginatorKeyFile=bin\Light.ViewModels.snk
