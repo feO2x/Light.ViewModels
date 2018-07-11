@@ -13,6 +13,7 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>XAML WPF WindowsStore UWP ViewModels MVVM INotifyPropertyChanged ICommand INotifyDataErrorInfo</PackageTags>
     <PackageReleaseNotes>New in v0.3: added ValidationManager and BaseNotifyDataErrorInfo</PackageReleaseNotes>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -20,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Light.GuardClauses" Version="3.5.0" />
+    <PackageReference Include="Light.GuardClauses" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

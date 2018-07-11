@@ -57,9 +57,7 @@ namespace Light.ViewModels
         /// <param name="propertyName">The name of the property (optional). This value is automatically set using the <see cref="CallerMemberNameAttribute" />.</param>
         /// <returns>The validation result of the <paramref name="validate" /> delegate.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="validate" /> or <paramref name="propertyName" /> is null.</exception>
-        protected ValidationResult<ValidationMessage> Validate<T>(T value, Func<T, ValidationResult<ValidationMessage>> validate, [CallerMemberName] string propertyName = null)
-        {
-            return ValidationManager.Validate(value, validate, this, propertyName);
-        }
+        protected ValidationResult<ValidationMessage> Validate<T>(T value, Func<T, ValidationResult<ValidationMessage>> validate, [CallerMemberName] string propertyName = null) => 
+            ValidationManager.Validate(value, validate, this, propertyName);
     }
 }

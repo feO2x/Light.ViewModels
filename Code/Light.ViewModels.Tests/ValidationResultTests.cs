@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Light.GuardClauses.Exceptions;
@@ -20,7 +21,7 @@ namespace Light.ViewModels.Tests
         [Fact]
         public void MultipleErrors()
         {
-            var errors = new[] { 1, 2, 3 };
+            var errors = new List<int> { 1, 2, 3 };
 
             var validationResult = new ValidationResult<int>(errors);
 
@@ -57,8 +58,8 @@ namespace Light.ViewModels.Tests
         [InlineData(new[] { "Foo", "Bar" }, new[] { "Qux" }, false)]
         public void EqualityOnError(string[] firstErrors, string[] secondErrors, bool expected)
         {
-            var first = new ValidationResult<string>(firstErrors);
-            var second = new ValidationResult<string>(secondErrors);
+            var first = new ValidationResult<string>(new List<string>(firstErrors));
+            var second = new ValidationResult<string>(new List<string>(secondErrors));
 
             var equalityResult = first == second;
             var inequalityResult = first != second;
@@ -74,16 +75,6 @@ namespace Light.ViewModels.Tests
 
             result.Errors.Should().HaveCount(1);
             result.Errors[0].Should().Be("Foo");
-        }
-
-        [Fact]
-        public void ErrorsMustNotContainNull()
-        {
-            // ReSharper disable once ObjectCreationAsStatement
-            Action act = () => new ValidationResult<string>(new[] { "Foo", null });
-
-            act.ShouldThrow<CollectionException>()
-               .And.Message.Should().Contain("The specified errors collection must not contain null.");
         }
     }
 }

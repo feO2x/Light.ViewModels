@@ -111,7 +111,6 @@ namespace Light.ViewModels.Tests
         public sealed class EqualityComparerMock : IEqualityComparer<int>
         {
             private int _equalsCallCount;
-            private int _getHashCodeCallCount;
 
             public bool Equals(int x, int y)
             {
@@ -119,17 +118,9 @@ namespace Light.ViewModels.Tests
                 return x == y;
             }
 
-            public int GetHashCode(int obj)
-            {
-                ++_getHashCodeCallCount;
-                return obj;
-            }
+            public int GetHashCode(int obj) => obj;
 
-            public void MustHaveBeenCalled()
-            {
-                _getHashCodeCallCount.Should().BeGreaterThan(0);
-                _equalsCallCount.Should().BeGreaterThan(0);
-            }
+            public void MustHaveBeenCalled() => _equalsCallCount.Should().BeGreaterThan(0);
         }
     }
 }
