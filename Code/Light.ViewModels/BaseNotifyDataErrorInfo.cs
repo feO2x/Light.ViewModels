@@ -23,7 +23,7 @@ namespace Light.ViewModels
         /// <param name="validationManager">The validation manager used by this instance (optional). If null is passed in, then a new instance of <see cref="ValidationManager" /> is created.</param>
         protected BaseNotifyDataErrorInfo(ValidationManager validationManager = null)
         {
-            ValidationManager = validationManager ?? new ValidationManager();
+            ValidationManager = validationManager ?? new ValidationManager(this);
         }
 
         /// <summary>
@@ -58,6 +58,6 @@ namespace Light.ViewModels
         /// <returns>The validation result of the <paramref name="validate" /> delegate.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="validate" /> or <paramref name="propertyName" /> is null.</exception>
         protected ValidationResult<ValidationMessage> Validate<T>(T value, Func<T, ValidationResult<ValidationMessage>> validate, [CallerMemberName] string propertyName = null) =>
-            ValidationManager.Validate(value, validate, this, propertyName);
+            ValidationManager.Validate(value, validate, propertyName);
     }
 }

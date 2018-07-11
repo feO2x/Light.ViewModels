@@ -12,6 +12,8 @@ namespace Light.ViewModels
     /// <typeparam name="TError">The type of the error messages.</typeparam>
     public class ValidationManager<TError>
     {
+        private readonly IRaiseErrorsChanged _target;
+
         /// <summary>
         /// Gets the internal dictionary used to store erroneous validation results.
         /// </summary>
@@ -20,9 +22,11 @@ namespace Light.ViewModels
         /// <summary>
         /// Initializes a new instance of <see cref="ValidationManager{TError}" /> with an optional errors dictionary.
         /// </summary>
+        /// <param name="target">The object that can raise the errors-changed-mechanism.</param>
         /// <param name="errors">The dictionary used to store the validation results of erroneous properties (optional). A new dictionary will be automatically created if null is passed in.</param>
-        public ValidationManager(Dictionary<string, ValidationResult<TError>> errors = null)
+        public ValidationManager(IRaiseErrorsChanged target, Dictionary<string, ValidationResult<TError>> errors = null)
         {
+            _target = target.MustNotBeNull(nameof(target));
             Errors = errors ?? new Dictionary<string, ValidationResult<TError>>();
         }
 
@@ -54,14 +58,12 @@ namespace Light.ViewModels
         /// <typeparam name="T">The type of the value.</typeparam>
         /// <param name="value">The value to be validated.</param>
         /// <param name="validate">The method that performs the validation of the given value.</param>
-        /// <param name="raiseErrorsChanged">The target entity which raise OnErrorsChanged.</param>
         /// <param name="propertyName">The name of the property (optional). This value is automatically set using the <see cref="CallerMemberNameAttribute" />.</param>
         /// <returns>The validation result of the <paramref name="validate" /> delegate.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="validate" />, <paramref name="raiseErrorsChanged" />, or <paramref name="propertyName" /> is null.</exception>
-        public ValidationResult<TError> Validate<T>(T value, Func<T, ValidationResult<TError>> validate, IRaiseErrorsChanged raiseErrorsChanged, [CallerMemberName] string propertyName = null)
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="validate" /> or <paramref name="propertyName" /> is null.</exception>
+        public ValidationResult<TError> Validate<T>(T value, Func<T, ValidationResult<TError>> validate, [CallerMemberName] string propertyName = null)
         {
             validate.MustNotBeNull(nameof(validate));
-            raiseErrorsChanged.MustNotBeNull(nameof(raiseErrorsChanged));
             propertyName.MustNotBeNull(nameof(propertyName));
 
             var validationResult = validate(value);
@@ -71,7 +73,7 @@ namespace Light.ViewModels
                     return validationResult;
 
                 Errors.Remove(propertyName);
-                raiseErrorsChanged.OnErrorsChanged(propertyName);
+                _target.OnErrorsChanged(propertyName);
                 return validationResult;
             }
 
@@ -81,12 +83,12 @@ namespace Light.ViewModels
                     return validationResult;
 
                 Errors[propertyName] = validationResult;
-                raiseErrorsChanged.OnErrorsChanged(propertyName);
+                _target.OnErrorsChanged(propertyName);
                 return validationResult;
             }
 
             Errors.Add(propertyName, validationResult);
-            raiseErrorsChanged.OnErrorsChanged(propertyName);
+            _target.OnErrorsChanged(propertyName);
             return validationResult;
         }
     }
@@ -99,8 +101,9 @@ namespace Light.ViewModels
         /// <summary>
         /// Initializes a new instance of <see cref="ValidationManager" /> with an optional errors dictionary.
         /// </summary>
+        /// <param name="target">The object that can raise the errors-changed-mechanism.</param>
         /// <param name="errors">The dictionary used to store the validation results of erroneous properties (optional). A new dictionary will be automatically created if null is passed in.</param>
-        public ValidationManager(Dictionary<string, ValidationResult<ValidationMessage>> errors = null) : base(errors) { }
+        public ValidationManager(IRaiseErrorsChanged target, Dictionary<string, ValidationResult<ValidationMessage>> errors = null) : base(target, errors) { }
 
         /// <summary>
         /// Gets the value indicating whether the target entity contains errors. Only <see cref="ValidationMessage" /> instances

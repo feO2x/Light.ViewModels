@@ -6,10 +6,12 @@ namespace Light.ViewModels.Tests
 {
     public sealed class ValidationManagerTests
     {
+        private readonly RaiseErrorsChangedSpy _spy = new RaiseErrorsChangedSpy();
+
         [Fact]
         public void NoErrorAfterInstantiation()
         {
-            var testTarget = new ValidationManager<string>();
+            var testTarget = new ValidationManager<string>(_spy);
 
             testTarget.HasErrors.Should().BeFalse();
         }
@@ -17,14 +19,13 @@ namespace Light.ViewModels.Tests
         [Fact]
         public void NewError()
         {
-            var testTarget = new ValidationManager<string>();
+            var testTarget = new ValidationManager<string>(_spy);
             var validationResult = new ValidationResult<string>("Foo");
-            var spy = new RaiseErrorsChangedSpy();
 
-            var actualResult = testTarget.Validate(42, value => validationResult, spy);
+            var actualResult = testTarget.Validate(42, value => validationResult);
 
             actualResult.Should().Be(validationResult);
-            spy.MustHaveBeenCalledExactlyOnceWithPropertyName(nameof(NewError));
+            _spy.MustHaveBeenCalledExactlyOnceWithPropertyName(nameof(NewError));
             testTarget.HasErrors.Should().BeTrue();
             testTarget.GetErrors(nameof(NewError)).Should().BeSameAs(validationResult.Errors);
         }
@@ -32,36 +33,34 @@ namespace Light.ViewModels.Tests
         [Fact]
         public void RemoveExistingError()
         {
-            var testTarget = new ValidationManager<string>();
-            var spy = new RaiseErrorsChangedSpy();
-            testTarget.Validate(42, value => new ValidationResult<string>("Foo"), spy);
+            var testTarget = new ValidationManager<string>(_spy);
+            testTarget.Validate(42, value => new ValidationResult<string>("Foo"));
             testTarget.HasErrors.Should().BeTrue();
-            spy.Reset();
+            _spy.Reset();
 
-            var actualResult = testTarget.Validate(42, value => ValidationResult<string>.Valid, spy);
+            var actualResult = testTarget.Validate(42, value => ValidationResult<string>.Valid);
 
             actualResult.Should().Be(ValidationResult<string>.Valid);
             testTarget.HasErrors.Should().BeFalse();
             testTarget.GetErrors(nameof(RemoveExistingError)).Should().BeNull();
-            spy.MustHaveBeenCalledExactlyOnceWithPropertyName(nameof(RemoveExistingError));
+            _spy.MustHaveBeenCalledExactlyOnceWithPropertyName(nameof(RemoveExistingError));
         }
 
         [Fact]
         public void ReplaceExistingError()
         {
-            var testTarget = new ValidationManager<string>();
-            var spy = new RaiseErrorsChangedSpy();
-            testTarget.Validate(42, value => new ValidationResult<string>("Foo"), spy);
+            var testTarget = new ValidationManager<string>(_spy);
+            testTarget.Validate(42, value => new ValidationResult<string>("Foo"));
             testTarget.HasErrors.Should().BeTrue();
-            spy.Reset();
+            _spy.Reset();
 
-            testTarget.Validate(87, value => new ValidationResult<string>("Bar"), spy);
+            testTarget.Validate(87, value => new ValidationResult<string>("Bar"));
 
             testTarget.HasErrors.Should().BeTrue();
             var errors = testTarget.GetErrors(nameof(ReplaceExistingError)).As<IReadOnlyList<string>>();
             errors.Should().HaveCount(1);
             errors[0].Should().Be("Bar").And.NotBe("Foo");
-            spy.MustHaveBeenCalledExactlyOnceWithPropertyName(nameof(ReplaceExistingError));
+            _spy.MustHaveBeenCalledExactlyOnceWithPropertyName(nameof(ReplaceExistingError));
         }
 
         public sealed class RaiseErrorsChangedSpy : IRaiseErrorsChanged
@@ -89,11 +88,11 @@ namespace Light.ViewModels.Tests
         public void DerivedValidationManagerOnlyCountsValidationMessagesWithLevelError()
         {
             var errors = new Dictionary<string, ValidationResult<ValidationMessage>>
-                         {
-                             ["Foo"] = new ValidationMessage("Bar"),
-                             ["Baz"] = new ValidationMessage("Qux", ValidationMessageLevel.Warning)
-                         };
-            var validationManager = new ValidationManager(errors);
+            {
+                ["Foo"] = new ValidationMessage("Bar"),
+                ["Baz"] = new ValidationMessage("Qux", ValidationMessageLevel.Warning)
+            };
+            var validationManager = new ValidationManager(_spy, errors);
             validationManager.HasErrors.Should().BeTrue();
 
             errors.Remove("Foo");
