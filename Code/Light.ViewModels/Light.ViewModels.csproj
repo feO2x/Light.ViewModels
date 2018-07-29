@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
     <Description>Simplify your XAML applications with Light.ViewModels!</Description>
-    <Version>0.3.1</Version>
+    <Version>0.4.0</Version>
     <Authors>Kenny Pflug</Authors>
     <Company>Kenny Pflug</Company>
     <Copyright>Copyright © 2017 - 2018 Kenny Pflug</Copyright>
@@ -12,7 +12,7 @@
     <PackageLicenseUrl>https://github.com/feO2x/Light.ViewModels/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>XAML WPF WindowsStore UWP ViewModels MVVM INotifyPropertyChanged ICommand INotifyDataErrorInfo</PackageTags>
-    <PackageReleaseNotes>Added support for Light.GuardClauses 4.0, validation manager is now coupled to the IRaiseErrorsChanged target over its entire lifetime.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for Light.GuardClauses 5.0, added ValidateAndParse method to ValidationManager.</PackageReleaseNotes>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
