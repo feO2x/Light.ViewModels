@@ -67,29 +67,56 @@ namespace Light.ViewModels
             propertyName.MustNotBeNull(nameof(propertyName));
 
             var validationResult = validate(value);
+            ProcessValidationResult(propertyName, validationResult);
+            return validationResult;
+        }
+
+        /// <summary>
+        /// Validates and parses the <paramref name="value"/> with the specified <paramref name="validateAndParse"/> delegate to <paramref name="parsedValue"/> and calls
+        /// <see cref="IRaiseErrorsChanged.OnErrorsChanged" /> when the errors have changed for the given property.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the value.</typeparam>
+        /// <typeparam name="TParsed">The type that <paramref name="value"/> should be parsed to.</typeparam>
+        /// <param name="value">The value to be validated and parsed.</param>
+        /// <param name="validateAndParse">The method that performs the validation and parsing of the given value.</param>
+        /// <param name="parsedValue">The value that was parsed from the input value.</param>
+        /// <param name="propertyName">The name of the property (optional). This value is automatically set using the <see cref="CallerMemberNameAttribute" />.</param>
+        /// <returns>The validation result of the <paramref name="validateAndParse" /> delegate.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="validateAndParse" /> or <paramref name="propertyName" /> is null.</exception>
+        public ValidationResult<TError> ValidateAndParse<TInput, TParsed>(TInput value, ValidateAndParse<TInput, TError, TParsed> validateAndParse, out TParsed parsedValue, [CallerMemberName] string propertyName = null)
+        {
+            validateAndParse.MustNotBeNull(nameof(validateAndParse));
+            propertyName.MustNotBeNull(nameof(propertyName));
+
+            var validationResult = validateAndParse(value, out parsedValue);
+            ProcessValidationResult(propertyName, validationResult);
+            return validationResult;
+        }
+
+        private void ProcessValidationResult(string propertyName, ValidationResult<TError> validationResult)
+        {
             if (validationResult.IsValid)
             {
                 if (Errors.ContainsKey(propertyName) == false)
-                    return validationResult;
+                    return;
 
                 Errors.Remove(propertyName);
                 _target.OnErrorsChanged(propertyName);
-                return validationResult;
+                return;
             }
 
             if (Errors.TryGetValue(propertyName, out var existingErrors))
             {
                 if (existingErrors == validationResult)
-                    return validationResult;
+                    return;
 
                 Errors[propertyName] = validationResult;
                 _target.OnErrorsChanged(propertyName);
-                return validationResult;
+                return;
             }
 
             Errors.Add(propertyName, validationResult);
             _target.OnErrorsChanged(propertyName);
-            return validationResult;
         }
     }
 

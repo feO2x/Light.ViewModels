@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using FluentAssertions;
 using Xunit;
 
@@ -78,6 +79,9 @@ namespace Light.ViewModels.Tests
                 _capturedPropertyNames[0].Should().Be(propertyName);
             }
 
+            public void MustNotHaveBeenCalled() =>
+                _capturedPropertyNames.Should().BeEmpty();
+
             public void Reset()
             {
                 _capturedPropertyNames.Clear();
@@ -99,5 +103,36 @@ namespace Light.ViewModels.Tests
 
             validationManager.HasErrors.Should().BeFalse();
         }
+
+        [Fact]
+        public void ParseDuringValidation()
+        {
+            var testTarget = new ValidationManager<string>(_spy);
+
+            var result = testTarget.ValidateAndParse("42.75", ValidateAndParse, out decimal parsedValue);
+
+            result.IsValid.Should().BeTrue();
+            parsedValue.Should().Be(42.75m);
+            testTarget.HasErrors.Should().BeFalse();
+            _spy.MustNotHaveBeenCalled();
+
+            
+        }
+
+        [Fact]
+        public void ValidateAndParseInvalidValue()
+        {
+            var testTarget = new ValidationManager<string>(_spy);
+
+            var result = testTarget.ValidateAndParse("no numeric value", ValidateAndParse, out decimal parsedValue);
+
+            result.IsValid.Should().BeFalse();
+            result.Errors.Should().HaveCount(1);
+            result.Errors[0].Should().Be("The value must be numeric");
+            _spy.MustHaveBeenCalledExactlyOnceWithPropertyName(nameof(ValidateAndParseInvalidValue));
+        }
+
+        private static ValidationResult<string> ValidateAndParse(string input, out decimal parsedNumber) =>
+                decimal.TryParse(input, NumberStyles.Number, CultureInfo.InvariantCulture, out parsedNumber) ? ValidationResult<string>.Valid : "The value must be numeric";
     }
 }
