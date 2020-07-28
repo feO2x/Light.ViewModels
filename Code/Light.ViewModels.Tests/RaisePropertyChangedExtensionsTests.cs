@@ -12,12 +12,12 @@ namespace Light.ViewModels.Tests
         public void SetWithDifferentValue(int newValue)
         {
             var propertyChangedStub = new PropertyChangedStub();
-            propertyChangedStub.MonitorEvents();
+            using var monitor = propertyChangedStub.Monitor();
 
             propertyChangedStub.IntegerValue = newValue;
 
             propertyChangedStub.IntegerValue.Should().Be(newValue);
-            propertyChangedStub.ShouldRaisePropertyChangeFor(s => s.IntegerValue);
+            monitor.Should().RaisePropertyChangeFor(s => s.IntegerValue);
         }
 
         [Theory]
@@ -27,12 +27,12 @@ namespace Light.ViewModels.Tests
         {
             var propertyChangedStub = new PropertyChangedStub();
             propertyChangedStub.TextValue.Should().NotBe(newValue);
-            propertyChangedStub.MonitorEvents();
+            using var monitor = propertyChangedStub.Monitor();
 
             propertyChangedStub.TextValue = newValue;
 
             propertyChangedStub.TextValue.Should().Be(newValue);
-            propertyChangedStub.ShouldRaisePropertyChangeFor(s => s.TextValue);
+            monitor.Should().RaisePropertyChangeFor(s => s.TextValue);
         }
 
         [Theory]
@@ -41,11 +41,11 @@ namespace Light.ViewModels.Tests
         public void NoNotificationWhenValueIsSame(string value)
         {
             var propertyChangedStub = new PropertyChangedStub { TextValue = value };
-            propertyChangedStub.MonitorEvents();
+            using var monitor = propertyChangedStub.Monitor();
 
             propertyChangedStub.TextValue = value;
 
-            propertyChangedStub.ShouldNotRaisePropertyChangeFor(s => s.TextValue);
+            monitor.Should().NotRaisePropertyChangeFor(s => s.TextValue);
         }
 
         [Fact]

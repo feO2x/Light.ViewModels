@@ -69,7 +69,7 @@ namespace Light.ViewModels.Tests
             // ReSharper disable once ObjectCreationAsStatement
             Action act = () => new DelegateCommand(null);
 
-            act.ShouldThrow<ArgumentNullException>()
+            act.Should().Throw<ArgumentNullException>()
                .And.ParamName.Should().Be("execute");
         }
 
@@ -92,7 +92,7 @@ namespace Light.ViewModels.Tests
 
             Action act = () => testTarget.Execute();
 
-            act.ShouldThrow<InvalidOperationException>()
+            act.Should().Throw<InvalidOperationException>()
                .And.Message.Should().Be("Execute must not be called when CanExecute returns false.");
         }
 

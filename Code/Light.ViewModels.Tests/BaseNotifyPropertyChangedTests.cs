@@ -26,11 +26,11 @@ namespace Light.ViewModels.Tests
         public void NotificationForOnPropertyChanged(int newValue)
         {
             var propertyChangedStub = new PropertyChangedStub();
-            propertyChangedStub.MonitorEvents();
+            using var monitor = propertyChangedStub.Monitor();
 
             propertyChangedStub.IntegerValue = newValue;
 
-            propertyChangedStub.ShouldRaisePropertyChangeFor(s => s.IntegerValue);
+            monitor.Should().RaisePropertyChangeFor(s => s.IntegerValue);
         }
 
         [Fact]
@@ -43,11 +43,11 @@ namespace Light.ViewModels.Tests
         public void PropertyChangedViaExpression()
         {
             var propertyChangedStub = new PropertyChangedStub();
-            propertyChangedStub.MonitorEvents();
+            using var monitor = propertyChangedStub.Monitor();
 
             propertyChangedStub.Increment();
 
-            propertyChangedStub.ShouldRaisePropertyChangeFor(s => s.IntegerValue);
+            monitor.Should().RaisePropertyChangeFor(s => s.IntegerValue);
         }
 
         public class PropertyChangedStub : BaseNotifyPropertyChanged

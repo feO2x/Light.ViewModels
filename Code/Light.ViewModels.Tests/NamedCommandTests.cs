@@ -31,7 +31,7 @@ namespace Light.ViewModels.Tests
             // ReSharper disable once ObjectCreationAsStatement
             Action act = () => new NamedCommand(null, DoNothing);
 
-            act.ShouldThrow<ArgumentNullException>()
+            act.Should().Throw<ArgumentNullException>()
                .And.ParamName.Should().Be("name");
         }
     }

@@ -9,7 +9,7 @@ namespace Light.ViewModels
     /// Represents a validation result indicating whether a validation process discovered errors.
     /// </summary>
     /// <typeparam name="TError">The type of the error messages.</typeparam>
-    public struct ValidationResult<TError> : IEquatable<ValidationResult<TError>>
+    public readonly struct ValidationResult<TError> : IEquatable<ValidationResult<TError>>
     {
         private readonly int _hashCode;
         private readonly List<TError> _errors;
@@ -104,7 +104,7 @@ namespace Light.ViewModels
         public static bool operator !=(ValidationResult<TError> x, ValidationResult<TError> y) => !(x._hashCode == y._hashCode && x.Equals(y));
 
         /// <summary>
-        /// Implicitely converts the specified error instance to a <see cref="ValidationResult{TError}" /> instance.
+        /// Implicitly converts the specified error instance to a <see cref="ValidationResult{TError}" /> instance.
         /// </summary>
         public static implicit operator ValidationResult<TError>(TError error) => new ValidationResult<TError>(error);
     }

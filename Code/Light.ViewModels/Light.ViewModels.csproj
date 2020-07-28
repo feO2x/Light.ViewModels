@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Description>Simplify your XAML applications with Light.ViewModels!</Description>
-    <Version>0.4.0</Version>
+    <Version>0.5.0</Version>
     <Authors>Kenny Pflug</Authors>
     <Company>Kenny Pflug</Company>
-    <Copyright>Copyright © 2017 - 2018 Kenny Pflug</Copyright>
+    <Copyright>Copyright © 2017 - 2020 Kenny Pflug</Copyright>
+    <LangVersion>8.0</LangVersion>
     <PackageIconUrl>https://raw.githubusercontent.com/feO2x/Light.GuardClauses/master/Images/light_logo.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/feO2x/Light.ViewModels</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/feO2x/Light.ViewModels/master/LICENSE</PackageLicenseUrl>
@@ -15,9 +16,5 @@
     <PackageReleaseNotes>Added support for Light.GuardClauses 5.0, added ValidateAndParse method to ValidationManager.</PackageReleaseNotes>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Light.GuardClauses" Version="5.0.0" />
-  </ItemGroup>
 
 </Project>
