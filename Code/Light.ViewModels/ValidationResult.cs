@@ -82,7 +82,7 @@ namespace Light.ViewModels
         /// This is true when the object is a <see cref="ValidationResult{TError}" /> instance and
         /// is valid or contains the same error messages in any order.
         /// </summary>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return obj is ValidationResult<TError> validationResult && Equals(validationResult);

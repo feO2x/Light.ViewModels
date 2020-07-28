@@ -53,7 +53,7 @@ namespace Light.ViewModels
         /// This is true when the other instance is a <see cref="ValidationMessage" />, too, and if
         /// both their <see cref="Message" /> and <see cref="Level" /> values are equal.
         /// </summary>
-        public override bool Equals(object obj) => Equals(obj as ValidationMessage);
+        public override bool Equals(object? obj) => Equals(obj as ValidationMessage);
 
         /// <summary>
         /// Gets the hash code of this validation message.
