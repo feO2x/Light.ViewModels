@@ -12,7 +12,7 @@ namespace Light.ViewModels
         /// <summary>
         /// Gets the delegate that is executed when <see cref="CanExecute" /> is called. This value might be null.
         /// </summary>
-        public readonly Func<object, bool> CanExecuteFunc;
+        public readonly Func<object, bool>? CanExecuteFunc;
 
         /// <summary>
         /// Gets the delegate that is executed when <see cref="Execute" /> is called.
@@ -25,7 +25,7 @@ namespace Light.ViewModels
         /// <param name="execute">The delegate that will be executed when <see cref="Execute" /> is called.</param>
         /// <param name="canExecute">the delegate that will be executed when <see cref="CanExecute" /> is called (optional).</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="execute" /> is null.</exception>
-        public ParameterizedCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        public ParameterizedCommand(Action<object> execute, Func<object, bool>? canExecute = null)
         {
             ExecuteAction = execute.MustNotBeNull(nameof(execute));
             CanExecuteFunc = canExecute;
@@ -48,7 +48,7 @@ namespace Light.ViewModels
         }
 
         /// <inheritdoc />
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
         /// <summary>
         /// Raises the <see cref="CanExecuteChanged" /> event.
@@ -65,7 +65,7 @@ namespace Light.ViewModels
         /// <summary>
         /// Gets the delegate that is executed when <see cref="CanExecute" /> is called. This value might be null.
         /// </summary>
-        public readonly Func<T, bool> CanExecuteFunc;
+        public readonly Func<T, bool>? CanExecuteFunc;
 
         /// <summary>
         /// Gets the delegate that is executed when <see cref="Execute" /> is called.
@@ -78,7 +78,7 @@ namespace Light.ViewModels
         /// <param name="execute">The delegate that will be executed when <see cref="Execute" /> is called.</param>
         /// <param name="canExecute">the delegate that will be executed when <see cref="CanExecute" /> is called (optional).</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="execute" /> is null.</exception>
-        public ParameterizedCommand(Action<T> execute, Func<T, bool> canExecute = null)
+        public ParameterizedCommand(Action<T> execute, Func<T, bool>? canExecute = null)
         {
             ExecuteAction = execute.MustNotBeNull(nameof(execute));
             CanExecuteFunc = canExecute;
@@ -89,7 +89,7 @@ namespace Light.ViewModels
         void ICommand.Execute(object parameter) => Execute((T) parameter);
 
         /// <inheritdoc />
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
         /// <summary>
         /// Executes the command.

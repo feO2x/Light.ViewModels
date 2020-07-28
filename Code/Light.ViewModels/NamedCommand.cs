@@ -15,7 +15,7 @@ namespace Light.ViewModels
         /// <param name="execute">The delegate that will be executed when <see cref="DelegateCommand.Execute" /> is called.</param>
         /// <param name="canExecute">The delegate that will be executed when <see cref="DelegateCommand.CanExecute" /> is called (optional).</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="name" /> or <paramref name="execute" /> is null.</exception>
-        public NamedCommand(string name, Action execute, Func<bool> canExecute = null) : base(execute, canExecute)
+        public NamedCommand(string name, Action execute, Func<bool>? canExecute = null) : base(execute, canExecute)
         {
             Name = name.MustNotBeNull(nameof(name));
         }

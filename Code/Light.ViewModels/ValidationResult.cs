@@ -22,7 +22,7 @@ namespace Light.ViewModels
         {
             singleError.MustNotBeNullReference(nameof(singleError));
             _errors = new List<TError>(1) { singleError };
-            _hashCode = singleError.GetHashCode();
+            _hashCode = singleError!.GetHashCode();
         }
 
         /// <summary>

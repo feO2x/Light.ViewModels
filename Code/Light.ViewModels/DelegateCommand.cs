@@ -5,14 +5,14 @@ using Light.GuardClauses;
 namespace Light.ViewModels
 {
     /// <summary>
-    /// Represents an <see cref="ICommand" /> that calls parameterless delegates.
+    /// Represents an <see cref="ICommand" /> that calls delegates without parameters.
     /// </summary>
     public class DelegateCommand : ICommand
     {
         /// <summary>
         /// Gets the delegate that is executed when <see cref="CanExecute" /> is called. This value might be null.
         /// </summary>
-        public readonly Func<bool> CanExecuteFunc;
+        public readonly Func<bool>? CanExecuteFunc;
 
         /// <summary>
         /// Gets the delegate that is executed when <see cref="Execute" /> is called.
@@ -25,7 +25,7 @@ namespace Light.ViewModels
         /// <param name="execute">The delegate that will be executed when <see cref="Execute" /> is called.</param>
         /// <param name="canExecute">The delegate that will be executed when <see cref="CanExecute" /> is called (optional).</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="execute" /> is null.</exception>
-        public DelegateCommand(Action execute, Func<bool> canExecute = null)
+        public DelegateCommand(Action execute, Func<bool>? canExecute = null)
         {
             ExecuteAction = execute.MustNotBeNull(nameof(execute));
             CanExecuteFunc = canExecute;
@@ -36,7 +36,7 @@ namespace Light.ViewModels
         void ICommand.Execute(object parameter) => Execute();
 
         /// <inheritdoc />
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
         /// <summary>
         /// Executes the command.

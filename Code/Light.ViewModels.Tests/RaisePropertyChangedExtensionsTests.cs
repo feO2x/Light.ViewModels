@@ -9,7 +9,7 @@ namespace Light.ViewModels.Tests
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
-        public void SetWithDifferentValue(int newValue)
+        public void SetWithDifferentNumber(int newValue)
         {
             var propertyChangedStub = new PropertyChangedStub();
             using var monitor = propertyChangedStub.Monitor();
@@ -23,7 +23,7 @@ namespace Light.ViewModels.Tests
         [Theory]
         [InlineData("Foo")]
         [InlineData("Bar")]
-        public void SetIfDifferent(string newValue)
+        public void SetWithDifferentString(string newValue)
         {
             var propertyChangedStub = new PropertyChangedStub();
             propertyChangedStub.TextValue.Should().NotBe(newValue);

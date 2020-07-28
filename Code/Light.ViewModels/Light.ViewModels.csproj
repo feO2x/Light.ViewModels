@@ -8,6 +8,7 @@
     <Company>Kenny Pflug</Company>
     <Copyright>Copyright © 2017 - 2020 Kenny Pflug</Copyright>
     <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
     <PackageIconUrl>https://raw.githubusercontent.com/feO2x/Light.GuardClauses/master/Images/light_logo.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/feO2x/Light.ViewModels</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/feO2x/Light.ViewModels/master/LICENSE</PackageLicenseUrl>

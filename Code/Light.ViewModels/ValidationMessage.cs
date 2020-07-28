@@ -39,7 +39,7 @@ namespace Light.ViewModels
         /// This is true when the other instance points to the same reference as this one
         /// or if both their <see cref="Message" /> and <see cref="Level" /> values are equal.
         /// </summary>
-        public bool Equals(ValidationMessage other)
+        public bool Equals(ValidationMessage? other)
         {
             if (ReferenceEquals(other, this)) return true;
             if (other is null) return false;

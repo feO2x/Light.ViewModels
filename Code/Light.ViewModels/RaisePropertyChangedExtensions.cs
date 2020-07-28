@@ -16,7 +16,7 @@ namespace Light.ViewModels
     public static class RaisePropertyChangedExtensions
     {
         /// <summary>
-        /// Sets the given <paramref name="value" /> on the target <paramref name="field" /> and raises the change notification mechanism.
+        /// Sets the given <paramref name="value" /> on the target <paramref name="field" /> and PropertyChanged.
         /// </summary>
         /// <typeparam name="T">The type of the target field and value.</typeparam>
         /// <param name="target">The target object that will raise the change notification mechanism.</param>
@@ -28,12 +28,13 @@ namespace Light.ViewModels
         /// if you change the value from a different member (we suggest you use the nameof operator in those scenarios).
         /// </param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="target" /> is null.</exception>
-        public static void Set<T>(this IRaisePropertyChanged target, out T field, T value, [CallerMemberName] string memberName = null)
+        public static void Set<T>(this IRaisePropertyChanged target, out T field, T value, [CallerMemberName] string? memberName = null)
         {
             target.MustNotBeNull(nameof(target));
+            memberName.MustNotBeNull(nameof(memberName));
 
             field = value;
-            target.OnPropertyChanged(memberName);
+            target.OnPropertyChanged(memberName!);
         }
 
         /// <summary>
@@ -52,14 +53,16 @@ namespace Light.ViewModels
         /// <returns>True if <paramref name="value" /> was set on <paramref name="field" /> and the change notification mechanism was raised, else false.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="target" /> is null.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool SetIfDifferent<T>(this IRaisePropertyChanged target, ref T field, T value, [CallerMemberName] string memberName = null)
+        public static bool SetIfDifferent<T>(this IRaisePropertyChanged target, ref T field, T value, [CallerMemberName] string? memberName = null)
         {
             target.MustNotBeNull(nameof(target));
+            memberName.MustNotBeNull(nameof(memberName));
+
             if (EqualityComparer<T>.Default.Equals(field, value))
                 return false;
 
             field = value;
-            target.OnPropertyChanged(memberName);
+            target.OnPropertyChanged(memberName!);
             return true;
         }
 
@@ -80,14 +83,16 @@ namespace Light.ViewModels
         /// <returns>True if <paramref name="value" /> was set on <paramref name="field" /> and the change notification mechanism was raised, else false.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="target" /> or <paramref name="comparer" /> is null.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool SetIfDifferent<T>(this IRaisePropertyChanged target, ref T field, T value, IEqualityComparer<T> comparer, [CallerMemberName] string memberName = null)
+        public static bool SetIfDifferent<T>(this IRaisePropertyChanged target, ref T field, T value, IEqualityComparer<T> comparer, [CallerMemberName] string? memberName = null)
         {
             target.MustNotBeNull(nameof(target));
+            memberName.MustNotBeNull(nameof(memberName));
+
             if (comparer.MustNotBeNull(nameof(comparer)).Equals(field, value))
                 return false;
 
             field = value;
-            target.OnPropertyChanged(memberName);
+            target.OnPropertyChanged(memberName!);
             return true;
         }
     }

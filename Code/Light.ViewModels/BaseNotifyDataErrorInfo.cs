@@ -21,7 +21,7 @@ namespace Light.ViewModels
         /// Initializes a new instance of <see cref="BaseNotifyDataErrorInfo" /> with an optional <paramref name="validationManager" />.
         /// </summary>
         /// <param name="validationManager">The validation manager used by this instance (optional). If null is passed in, then a new instance of <see cref="ValidationManager" /> is created.</param>
-        protected BaseNotifyDataErrorInfo(ValidationManager validationManager = null)
+        protected BaseNotifyDataErrorInfo(ValidationManager? validationManager = null)
         {
             ValidationManager = validationManager ?? new ValidationManager(this);
         }
@@ -32,7 +32,7 @@ namespace Light.ViewModels
         public IReadOnlyDictionary<string, ValidationResult<ValidationMessage>> AllErrors => ValidationManager.AllErrors;
 
         /// <inheritdoc />
-        public IEnumerable GetErrors(string propertyName) => ValidationManager.GetErrors(propertyName);
+        public IEnumerable? GetErrors(string propertyName) => ValidationManager.GetErrors(propertyName);
 
         /// <inheritdoc />
         public bool HasErrors => ValidationManager.HasErrors;
@@ -40,7 +40,7 @@ namespace Light.ViewModels
         /// <summary>
         /// Occurs when the validation errors have changed for a property or for the entire entity.
         /// </summary>
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
         void IRaiseErrorsChanged.OnErrorsChanged(string propertyName)
         {
@@ -57,7 +57,7 @@ namespace Light.ViewModels
         /// <param name="propertyName">The name of the property (optional). This value is automatically set using the <see cref="CallerMemberNameAttribute" />.</param>
         /// <returns>The validation result of the <paramref name="validate" /> delegate.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="validate" /> or <paramref name="propertyName" /> is null.</exception>
-        protected ValidationResult<ValidationMessage> Validate<T>(T value, Func<T, ValidationResult<ValidationMessage>> validate, [CallerMemberName] string propertyName = null) =>
+        protected ValidationResult<ValidationMessage> Validate<T>(T value, Func<T, ValidationResult<ValidationMessage>> validate, [CallerMemberName] string? propertyName = null) =>
             ValidationManager.Validate(value, validate, propertyName);
     }
 }
