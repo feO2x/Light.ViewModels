@@ -12,7 +12,7 @@ namespace Light.ViewModels
     public readonly struct ValidationResult<TError> : IEquatable<ValidationResult<TError>>
     {
         private readonly int _hashCode;
-        private readonly List<TError> _errors;
+        private readonly List<TError>? _errors;
 
         /// <summary>
         /// Creates a new instance of <see cref="ValidationResult{TError}" /> with a single error.
@@ -46,7 +46,7 @@ namespace Light.ViewModels
         /// <summary>
         /// Get the list of errors. This property is null when <see cref="IsValid" /> returns true.
         /// </summary>
-        public IReadOnlyList<TError> Errors => _errors;
+        public IReadOnlyList<TError>? Errors => _errors;
 
         /// <summary>
         /// Gets a valid instance of <see cref="ValidationResult{TError}" />.

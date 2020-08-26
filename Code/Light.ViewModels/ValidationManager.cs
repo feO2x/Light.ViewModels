@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Light.GuardClauses;
 
@@ -12,7 +13,10 @@ namespace Light.ViewModels
     /// <typeparam name="TError">The type of the error messages.</typeparam>
     public class ValidationManager<TError>
     {
-        private readonly IRaiseErrorsChanged _target;
+        /// <summary>
+        /// Gets the target that can raise the Errors-Changed event.
+        /// </summary>
+        protected readonly IRaiseErrorsChanged Target;
 
         /// <summary>
         /// Gets the internal dictionary used to store erroneous validation results.
@@ -26,7 +30,7 @@ namespace Light.ViewModels
         /// <param name="errors">The dictionary used to store the validation results of erroneous properties (optional). A new dictionary will be automatically created if null is passed in.</param>
         public ValidationManager(IRaiseErrorsChanged target, Dictionary<string, ValidationResult<TError>>? errors = null)
         {
-            _target = target.MustNotBeNull(nameof(target));
+            Target = target.MustNotBeNull(nameof(target));
             Errors = errors ?? new Dictionary<string, ValidationResult<TError>>();
         }
 
@@ -93,15 +97,31 @@ namespace Light.ViewModels
             return validationResult;
         }
 
+        /// <summary>
+        /// Clears all errors if necessary and calls <see cref="IRaiseErrorsChanged.OnErrorsChanged"/> for each entry that was present in the errors dictionary.
+        /// </summary>
+        public void ClearErrors()
+        {
+            if (Errors.Count == 0)
+                return;
+
+            var keys = Errors.Keys.ToArray();
+            Errors.Clear();
+            for (var i = 0; i < keys.Length; i++)
+            {
+                Target.OnErrorsChanged(keys[i]);
+            }
+        }
+
         private void ProcessValidationResult(string propertyName, ValidationResult<TError> validationResult)
         {
             if (validationResult.IsValid)
             {
-                if (Errors.ContainsKey(propertyName) == false)
+                if (!Errors.ContainsKey(propertyName))
                     return;
 
                 Errors.Remove(propertyName);
-                _target.OnErrorsChanged(propertyName);
+                Target.OnErrorsChanged(propertyName);
                 return;
             }
 
@@ -111,12 +131,12 @@ namespace Light.ViewModels
                     return;
 
                 Errors[propertyName] = validationResult;
-                _target.OnErrorsChanged(propertyName);
+                Target.OnErrorsChanged(propertyName);
                 return;
             }
 
             Errors.Add(propertyName, validationResult);
-            _target.OnErrorsChanged(propertyName);
+            Target.OnErrorsChanged(propertyName);
         }
     }
 
@@ -140,14 +160,15 @@ namespace Light.ViewModels
         {
             get
             {
-                if (Errors.Count == 0) return false;
+                if (Errors.Count == 0)
+                    return false;
 
                 var numberOfErrors = 0;
                 foreach (var keyValuePair in Errors)
                 {
-                    for (var i = 0; i < keyValuePair.Value.Errors.Count; i++)
+                    for (var i = 0; i < keyValuePair.Value.Errors!.Count; i++)
                     {
-                        if (keyValuePair.Value.Errors[i].Level == ValidationMessageLevel.Error)
+                        if (keyValuePair.Value.Errors![i].Level == ValidationMessageLevel.Error)
                             numberOfErrors++;
                     }
                 }

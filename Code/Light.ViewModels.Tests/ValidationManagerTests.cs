@@ -124,12 +124,35 @@ namespace Light.ViewModels.Tests
         {
             var testTarget = new ValidationManager<string>(_spy);
 
-            var result = testTarget.ValidateAndParse("no numeric value", ValidateAndParse, out decimal parsedValue);
+            var result = testTarget.ValidateAndParse("no numeric value", ValidateAndParse, out decimal _);
 
             result.IsValid.Should().BeFalse();
             result.Errors.Should().HaveCount(1);
-            result.Errors[0].Should().Be("The value must be numeric");
+            result.Errors![0].Should().Be("The value must be numeric");
             _spy.MustHaveBeenCalledExactlyOnceWithPropertyName(nameof(ValidateAndParseInvalidValue));
+        }
+
+        [Fact]
+        public void ClearAllErrors()
+        {
+            var testTarget = new ValidationManager<string>(_spy, new Dictionary<string,ValidationResult<string>> { ["Foo"] = "Bar" });
+
+            testTarget.ClearErrors();
+
+            testTarget.HasErrors.Should().BeFalse();
+            testTarget.AllErrors.Should().BeEmpty();
+            _spy.MustHaveBeenCalledExactlyOnceWithPropertyName("Foo");
+        }
+
+        [Fact]
+        public void ClearNonExistentErrors()
+        {
+            var testTarget = new ValidationManager(_spy);
+
+            testTarget.ClearErrors();
+
+            testTarget.HasErrors.Should().BeFalse();
+            _spy.MustNotHaveBeenCalled();
         }
 
         private static ValidationResult<string> ValidateAndParse(string input, out decimal parsedNumber) =>
