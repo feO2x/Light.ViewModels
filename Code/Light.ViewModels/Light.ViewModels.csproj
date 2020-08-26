@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;netstandard2.0</TargetFrameworks>
     <Description>Simplify your XAML applications with Light.ViewModels!</Description>
-    <Version>0.5.0</Version>
+    <Version>0.6.0</Version>
     <Authors>Kenny Pflug</Authors>
     <Company>Kenny Pflug</Company>
     <Copyright>Copyright © 2017 - 2020 Kenny Pflug</Copyright>
@@ -21,11 +21,10 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <PackageTags>XAML;WPF;WindowsStore;UWP;ViewModels;MVVM;INotifyPropertyChanged;ICommand;INotifyDataErrorInfo</PackageTags>
-    <PackageReleaseNotes>Light.ViewModels 0.5.0
+    <PackageReleaseNotes>Light.ViewModels 0.6.0
 --------------------
-- The library is now compiled against netstandard2.0
-- added support for Nullable Reference Types
-- BaseNotifyPropertyChanged now has direct support for Set and SetIfDifferent
+- Added ClearErrors method to ValidationManager
+- ValidationManager now provides the Target to deriving classes
     </PackageReleaseNotes>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
