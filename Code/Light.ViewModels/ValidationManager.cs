@@ -8,21 +8,11 @@ using Light.GuardClauses;
 namespace Light.ViewModels
 {
     /// <summary>
-    /// Represents an object that handles the current errors of an entity.
+    /// Represents an object that handles the current errors of an object (usually a view model) that implements <see cref="System.ComponentModel.INotifyDataErrorInfo"/>.
     /// </summary>
     /// <typeparam name="TError">The type of the error messages.</typeparam>
     public class ValidationManager<TError>
     {
-        /// <summary>
-        /// Gets the target that can raise the Errors-Changed event.
-        /// </summary>
-        protected readonly IRaiseErrorsChanged Target;
-
-        /// <summary>
-        /// Gets the internal dictionary used to store erroneous validation results.
-        /// </summary>
-        protected readonly Dictionary<string, ValidationResult<TError>> Errors;
-
         /// <summary>
         /// Initializes a new instance of <see cref="ValidationManager{TError}" /> with an optional errors dictionary.
         /// </summary>
@@ -33,6 +23,16 @@ namespace Light.ViewModels
             Target = target.MustNotBeNull(nameof(target));
             Errors = errors ?? new Dictionary<string, ValidationResult<TError>>();
         }
+
+        /// <summary>
+        /// Gets the target that can raise the Errors-Changed event.
+        /// </summary>
+        protected IRaiseErrorsChanged Target { get; }
+
+        /// <summary>
+        /// Gets the internal dictionary used to store erroneous validation results.
+        /// </summary>
+        protected Dictionary<string, ValidationResult<TError>> Errors { get; }
 
         /// <summary>
         /// Gets the value indicating whether the target entity contains errors.
@@ -76,11 +76,11 @@ namespace Light.ViewModels
         }
 
         /// <summary>
-        /// Validates and parses the <paramref name="value"/> with the specified <paramref name="validateAndParse"/> delegate to <paramref name="parsedValue"/> and calls
+        /// Validates and parses the <paramref name="value" /> with the specified <paramref name="validateAndParse" /> delegate to <paramref name="parsedValue" /> and calls
         /// <see cref="IRaiseErrorsChanged.OnErrorsChanged" /> when the errors have changed for the given property.
         /// </summary>
         /// <typeparam name="TInput">The type of the value.</typeparam>
-        /// <typeparam name="TParsed">The type that <paramref name="value"/> should be parsed to.</typeparam>
+        /// <typeparam name="TParsed">The type that <paramref name="value" /> should be parsed to.</typeparam>
         /// <param name="value">The value to be validated and parsed.</param>
         /// <param name="validateAndParse">The method that performs the validation and parsing of the given value.</param>
         /// <param name="parsedValue">The value that was parsed from the input value.</param>
@@ -98,7 +98,7 @@ namespace Light.ViewModels
         }
 
         /// <summary>
-        /// Clears all errors if necessary and calls <see cref="IRaiseErrorsChanged.OnErrorsChanged"/> for each entry that was present in the errors dictionary.
+        /// Clears all errors if necessary and calls <see cref="IRaiseErrorsChanged.OnErrorsChanged" /> for each entry that was present in the errors dictionary.
         /// </summary>
         public void ClearErrors()
         {
