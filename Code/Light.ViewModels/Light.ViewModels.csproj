@@ -3,10 +3,10 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <Description>Simplify your XAML applications with Light.ViewModels!</Description>
-        <Version>0.6.0</Version>
+        <Version>0.7.0</Version>
         <Authors>Kenny Pflug</Authors>
         <Company>Kenny Pflug</Company>
-        <Copyright>Copyright © 2017 - 2020 Kenny Pflug</Copyright>
+        <Copyright>Copyright © 2017 - 2021 Kenny Pflug</Copyright>
         <LangVersion>9.0</LangVersion>
         <Nullable>enable</Nullable>
         <DebugType>portable</DebugType>
@@ -22,16 +22,18 @@
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <PackageTags>XAML;WPF;WindowsStore;UWP;ViewModels;MVVM;INotifyPropertyChanged;ICommand;INotifyDataErrorInfo</PackageTags>
         <PackageReleaseNotes>
-Light.ViewModels 0.6.0
---------------------
-- Added ClearErrors method to ValidationManager
-- ValidationManager now provides the Target to deriving classes
+Light.ViewModels 0.7.0
+-----------------------
+
+- Added ValidateAsync and ValidateAndParseAsync
+- breaking changes: BaseNotifyDataErrorInfo now uses strings as error objects
+- added generic BaseNotifyDataErrorInfo base class
         </PackageReleaseNotes>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Nullable" Version="1.2.1">
+        <PackageReference Include="Nullable" Version="1.3.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
