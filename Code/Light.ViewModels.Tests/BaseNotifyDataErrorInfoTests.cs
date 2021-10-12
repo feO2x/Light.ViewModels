@@ -39,7 +39,7 @@ namespace Light.ViewModels.Tests
 
         public sealed class BaseNotifyDataErrorInfoDummy : BaseNotifyDataErrorInfo
         {
-            public new ValidationManager ValidationManager => base.ValidationManager;
+            public new ValidationManager<string> ValidationManager => base.ValidationManager;
         }
     }
 }

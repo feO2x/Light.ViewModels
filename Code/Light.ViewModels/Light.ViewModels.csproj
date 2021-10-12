@@ -1,44 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netstandard2.0</TargetFrameworks>
-    <Description>Simplify your XAML applications with Light.ViewModels!</Description>
-    <Version>0.6.0</Version>
-    <Authors>Kenny Pflug</Authors>
-    <Company>Kenny Pflug</Company>
-    <Copyright>Copyright © 2017 - 2020 Kenny Pflug</Copyright>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
-    <DebugType>portable</DebugType>
-    <PackageIcon>light-logo.png</PackageIcon>
-    <Deterministic>true</Deterministic>
-    <PackageProjectUrl>https://github.com/feO2x/Light.ViewModels</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/feO2x/Light.ViewModels.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <PackageTags>XAML;WPF;WindowsStore;UWP;ViewModels;MVVM;INotifyPropertyChanged;ICommand;INotifyDataErrorInfo</PackageTags>
-    <PackageReleaseNotes>Light.ViewModels 0.6.0
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Description>Simplify your XAML applications with Light.ViewModels!</Description>
+        <Version>0.6.0</Version>
+        <Authors>Kenny Pflug</Authors>
+        <Company>Kenny Pflug</Company>
+        <Copyright>Copyright © 2017 - 2020 Kenny Pflug</Copyright>
+        <LangVersion>9.0</LangVersion>
+        <Nullable>enable</Nullable>
+        <DebugType>portable</DebugType>
+        <PackageIcon>light-logo.png</PackageIcon>
+        <Deterministic>true</Deterministic>
+        <PackageProjectUrl>https://github.com/feO2x/Light.ViewModels</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/feO2x/Light.ViewModels.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <PackageTags>XAML;WPF;WindowsStore;UWP;ViewModels;MVVM;INotifyPropertyChanged;ICommand;INotifyDataErrorInfo</PackageTags>
+        <PackageReleaseNotes>
+Light.ViewModels 0.6.0
 --------------------
 - Added ClearErrors method to ValidationManager
 - ValidationManager now provides the Target to deriving classes
-    </PackageReleaseNotes>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
+        </PackageReleaseNotes>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Nullable" Version="1.2.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Nullable" Version="1.2.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+        <PackageReference Include="Light.GuardClauses" Version="9.0.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Include="light-logo.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="light-logo.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
 
 </Project>

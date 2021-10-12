@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Light.GuardClauses;
 
 namespace Light.ViewModels
 {
     /// <summary>
-    /// Represents an object that handles the current errors of an object (usually a view model) that implements <see cref="System.ComponentModel.INotifyDataErrorInfo"/>.
+    /// Represents an object that handles the current errors of an object (usually a view model) that implements <see cref="System.ComponentModel.INotifyDataErrorInfo" />.
     /// </summary>
     /// <typeparam name="TError">The type of the error messages.</typeparam>
     public class ValidationManager<TError>
@@ -76,18 +77,41 @@ namespace Light.ViewModels
         }
 
         /// <summary>
+        /// Validates the specified value asynchronously.
+        /// </summary>
+        /// <typeparam name="T">The type of the value that is being validated.</typeparam>
+        /// <param name="value">The value to be validated.</param>
+        /// <param name="validateAsync"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public async Task<ValidationResult<TError>> ValidateAsync<T>(T value,
+                                                                     Func<T, Task<ValidationResult<TError>>> validateAsync,
+                                                                     [CallerMemberName] string? propertyName = null)
+        {
+            validateAsync.MustNotBeNull(nameof(validateAsync));
+            propertyName.MustNotBeNull(nameof(propertyName));
+
+            var validationResult = await validateAsync(value);
+            ProcessValidationResult(propertyName!, validationResult);
+            return validationResult;
+        }
+
+        /// <summary>
         /// Validates and parses the <paramref name="value" /> with the specified <paramref name="validateAndParse" /> delegate to <paramref name="parsedValue" /> and calls
         /// <see cref="IRaiseErrorsChanged.OnErrorsChanged" /> when the errors have changed for the given property.
         /// </summary>
         /// <typeparam name="TInput">The type of the value.</typeparam>
         /// <typeparam name="TParsed">The type that <paramref name="value" /> should be parsed to.</typeparam>
         /// <param name="value">The value to be validated and parsed.</param>
-        /// <param name="validateAndParse">The method that performs the validation and parsing of the given value.</param>
+        /// <param name="validateAndParse">The delegate that performs the validation and parsing of the given value.</param>
         /// <param name="parsedValue">The value that was parsed from the input value.</param>
         /// <param name="propertyName">The name of the property (optional). This value is automatically set using the <see cref="CallerMemberNameAttribute" />.</param>
         /// <returns>The validation result of the <paramref name="validateAndParse" /> delegate.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="validateAndParse" /> or <paramref name="propertyName" /> is null.</exception>
-        public ValidationResult<TError> ValidateAndParse<TInput, TParsed>(TInput value, ValidateAndParse<TInput, TError, TParsed> validateAndParse, out TParsed parsedValue, [CallerMemberName] string? propertyName = null)
+        public ValidationResult<TError> ValidateAndParse<TInput, TParsed>(TInput value,
+                                                                          ValidateAndParse<TInput, TError, TParsed> validateAndParse,
+                                                                          out TParsed parsedValue,
+                                                                          [CallerMemberName] string? propertyName = null)
         {
             validateAndParse.MustNotBeNull(nameof(validateAndParse));
             propertyName.MustNotBeNull(nameof(propertyName));
@@ -95,6 +119,29 @@ namespace Light.ViewModels
             var validationResult = validateAndParse(value, out parsedValue);
             ProcessValidationResult(propertyName!, validationResult);
             return validationResult;
+        }
+
+        /// <summary>
+        /// Validates and parses the <paramref name="value" /> asynchronously with the specified <paramref name="validateAndParseAsync" /> delegate and calls
+        /// <see cref="IRaiseErrorsChanged.OnErrorsChanged" /> when the errors have changed for the given property.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the value.</typeparam>
+        /// <typeparam name="TParsed">The type that <paramref name="value" /> should be parsed to.</typeparam>
+        /// <param name="value">The value to be validated and parsed.</param>
+        /// <param name="validateAndParseAsync">The delegate that performs the validation and parsing of the given value.</param>
+        /// <param name="propertyName">The name of the property (optional). This value is automatically set using the <see cref="CallerMemberNameAttribute" />.</param>
+        /// <returns>The async validation result of the <paramref name="validateAndParseAsync" /> delegate.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="validateAndParseAsync" /> or <paramref name="propertyName" /> is null.</exception>
+        public async Task<AsyncValidateAndParseResult<TError, TParsed>> ValidateAndParseAsync<TInput, TParsed>(TInput value,
+                                                                                                               ValidateAndParseAsync<TInput, TError, TParsed> validateAndParseAsync,
+                                                                                                               [CallerMemberName] string? propertyName = null)
+        {
+            validateAndParseAsync.MustNotBeNull(nameof(validateAndParseAsync));
+            propertyName.MustNotBeNull(nameof(propertyName));
+
+            var result = await validateAndParseAsync(value);
+            ProcessValidationResult(propertyName!, result.ValidationResult);
+            return result;
         }
 
         /// <summary>
